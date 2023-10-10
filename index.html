@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Management Tool</title>
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .project-container {
+            margin: 20px;
+        }
+        .project {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .task {
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        /* Add your CSS styles here */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.project-container {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 400px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    margin-top: 0;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.project {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tasks {
+    margin-top: 10px;
+}
+
+.task {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+    padding: 5px;
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.task span {
+    flex: 1;
+    padding: 5px;
+}
+
+.task:nth-child(even) {
+    background-color: #e0e0e0;
+}
+
+        
+    </style>
+</head>
+<body>
+    <h1>Project Management Tool</h1>
+    <div class="project-container">
+        <h2>Create Project</h2>
+        <input type="text" id="projectName" placeholder="Enter project name">
+        <button onclick="createProject()">Create</button>
+    </div>
+
+    <div class="project-container">
+        <h2>Projects</h2>
+        <div id="projects"></div>
+    </div>
+
+    <script>
+        // Sample data structure for projects and tasks
+        const projectsData = [];
+
+        function createProject() {
+            const projectName = document.getElementById('projectName').value;
+            if (projectName.trim() === '') {
+                alert('Please enter a project name.');
+                return;
+            }
+
+            const project = {
+                name: projectName,
+                tasks: [],
+            };
+
+            projectsData.push(project);
+            displayProjects();
+            document.getElementById('projectName').value = '';
+        }
+
+        function createTask(projectIndex) {
+            const taskName = prompt('Enter task name:');
+            if (taskName === null || taskName.trim() === '') {
+                return;
+            }
+
+            const taskDeadline = prompt('Enter task deadline:');
+            if (taskDeadline === null || taskDeadline.trim() === '') {
+                return;
+            }
+
+            const task = {
+                name: taskName,
+                deadline: taskDeadline,
+            };
+
+            projectsData[projectIndex].tasks.push(task);
+            displayProjects();
+        }
+
+        function displayProjects() {
+            const projectsContainer = document.getElementById('projects');
+            projectsContainer.innerHTML = '';
+
+            for (let i = 0; i < projectsData.length; i++) {
+                const project = projectsData[i];
+                const projectElement = document.createElement('div');
+                projectElement.classList.add('project');
+
+                const projectNameElement = document.createElement('h3');
+                projectNameElement.innerText = project.name;
+
+                const tasksElement = document.createElement('div');
+                tasksElement.classList.add('tasks');
+
+                project.tasks.forEach((task) => {
+                    const taskElement = document.createElement('div');
+                    taskElement.classList.add('task');
+                    taskElement.innerHTML = `
+                        <span>${task.name}</span>
+                        <span>Deadline: ${task.deadline}</span>
+                    `;
+                    tasksElement.appendChild(taskElement);
+                });
+
+                const createTaskButton = document.createElement('button');
+                createTaskButton.innerText = 'Add Task';
+                createTaskButton.onclick = () => createTask(i);
+
+                projectElement.appendChild(projectNameElement);
+                projectElement.appendChild(tasksElement);
+                projectElement.appendChild(createTaskButton);
+
+                projectsContainer.appendChild(projectElement);
+            }
+        }
+
+        // Initial display of projects
+        displayProjects();
+    </script>
+</body>
+</html>
